@@ -1,0 +1,89 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Gothic+A1&family=Noto+Sans+KR&display=swap');
+    *{margin:0; padding:0;}
+    body{background-color:rgb(178,199,217);}
+    #up {
+        position: fixed;
+        width:25px;
+        right:20px;
+        bottom: 40px;
+        font-size:25px;
+        font-family: 'Noto Sans KR', sans-serif;
+        color:white;
+    }
+    #down {
+        position: fixed;
+        width:25px;
+        right:20px;
+        bottom: 10px;
+        font-size:25px;
+        font-family: 'Noto Sans KR', sans-serif;
+        color:white;
+    }
+    .preview{padding:20px;}
+    .preview .chat { display: flex; align-items: flex-start; padding: 10px;}
+    .preview .chat .icon {
+        position: relative;
+        overflow: hidden;
+        width: 50px;
+        height: 50px;
+        left:50xp;
+        border-radius: 50%;
+        background-color: #eee;
+    }
+    .preview .chat .title {
+        position: absolute;
+        overflow: hidden;
+        margin-left:55px;
+        width: 50px;
+        height: 15px;
+        border-radius: 50px;
+        background-color: #eee;
+    }
+    .preview .chat img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+    .preview .chat.ing .textbox {
+        position: relative;
+        display: inline-block;
+        max-width: calc(100% - 70px);
+        padding: 13px;
+        left:5px;
+        margin-top: 23px;
+        font-size: 15px;
+        font-weight: 500;
+        /*font-family: 'Gothic A1', sans-serif;*/
+        font-family: 'Noto Sans KR', sans-serif;
+        border:none;
+        border-top-right-radius: 17px;
+        border-bottom-right-radius: 17px;
+        border-bottom-left-radius: 17px;
+        background-color: white;
+    }
+    .preview .chat .textbox::before {
+        position: absolute;
+        display: block;
+        top: 0;
+        font-size: 1.5rem;
+    }
+    .preview .me {
+        flex-direction: row-reverse;
+    }
+    .preview .chat.me .textbox {
+        position: relative;
+        display: inline-block;
+        max-width: calc(100% - 70px);
+        padding: 13px;
+        margin-top: 7px;
+        font-size: 15px;
+        font-family: 'Noto Sans KR', sans-serif;
+        color: white;
+        background-color:rgb(100,100,100);
+        border-top-left-radius: 17px;
+        border-bottom-right-radius: 17px;
+        border-bottom-left-radius: 17px;
+    }
+</style>
