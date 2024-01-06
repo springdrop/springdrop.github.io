@@ -2,11 +2,219 @@
 <head>
     <meta charset="utf-8">
     <title>우정잉 버블</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Gothic+A1&family=Noto+Sans+KR&display=swap');
+        *{margin:0; padding:0;}
+        body{
+            background-color:rgb(178,199,217);
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .enter{
+            width: 300px;
+            height: 30px;
+            font-weight: bold;
+            line-height: 30px;
+            margin: 20px auto;
+            text-align: center;
+            background-color: rgb(242,228,174);
+            border:solid 3px;
+            border-color: white;
+            border-top-left-radius: 17px;
+            border-top-right-radius: 17px;
+            border-bottom-right-radius: 17px;
+            border-bottom-left-radius: 17px;
+        }
+        #up {
+            position: fixed;
+            width:25px;
+            right:20px;
+            bottom: 40px;
+            font-size:25px;
+            /*font-family: 'Noto Sans KR', sans-serif;*/
+            color:white;
+        }
+        #down {
+            position: fixed;
+            width:25px;
+            right:20px;
+            bottom: 10px;
+            font-size:25px;
+            /*font-family: 'Noto Sans KR', sans-serif;*/
+            color:white;
+        }
+        .preview{padding:20px;}
+        .preview .chat { display: flex; align-items: flex-start; padding: 10px;}
+        .preview .chat .icon {
+            position: relative;
+            overflow: hidden;
+            width: 50px;
+            height: 50px;
+            left:50xp;
+            border-radius: 50%;
+            background-color: #eee;
+        }
+        .preview .chat .title {
+            position: absolute;
+            overflow: hidden;
+            margin-left:55px;
+            width: 50px;
+            height: 15px;
+            border-radius: 50px;
+            background-color: #eee;
+        }
+        .preview .chat img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .preview .chat.ing .textbox {
+            position: relative;
+            display: inline-block;
+            max-width: calc(100% - 70px);
+            padding: 13px;
+            left:5px;
+            margin-top: 23px;
+            font-size: 15px;
+            font-weight: 500;
+            /*font-family: 'Gothic A1', sans-serif;*/
+            /*font-family: 'Noto Sans KR', sans-serif;*/
+            border:none;
+            border-top-right-radius: 17px;
+            border-bottom-right-radius: 17px;
+            border-bottom-left-radius: 17px;
+            background-color: white;
+        }
+        .preview .chat .textbox::before {
+            position: absolute;
+            display: block;
+            top: 0;
+            font-size: 1.5rem;
+        }
+        .preview .me {
+            flex-direction: row-reverse;
+        }
+        .preview .chat.me .textbox {
+            position: relative;
+            display: inline-block;
+            max-width: calc(100% - 70px);
+            padding: 13px;
+            margin-top: 7px;
+            font-size: 15px;
+            /*font-family: 'Noto Sans KR', sans-serif;*/
+            border:none;
+            color: white;
+            background-color:rgb(100,100,100);
+            border-top-left-radius: 17px;
+            border-bottom-right-radius: 17px;
+            border-bottom-left-radius: 17px;
+        }
+    </style>
 </head>
 <script type="text/javascript" nonce="XOJ0BVE+zr3qdJZKBBAaLFbFzesxhK/xP1QmLnOdycs=" src="//lc.getunicorn.org?type=base-script&amp;request-id=80680"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="./style.css">
-<link src="./bubble.js">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+<script>
+    var mv_data = [];
+
+    function fnFileUpload() {
+        const input = document.querySelector('input');
+        const preview = document.querySelector('.preview');
+        const selectedFiles = input.files;
+        //const list = document.createElement('ul');
+        //preview.appendChild(list);
+
+        //if()
+        
+        for(const file of selectedFiles) {
+            const listItem = document.createElement('p');
+
+            if(validFileType(file)) {
+                const textContents = document.createElement('div');
+                const txt = "";
+                
+                let reader = new FileReader();
+                reader.onload = function () {
+                    $('.preview').html("");
+                    fnChgJson(reader.result);
+                };
+                reader.readAsText(file, "UTF-8");
+                
+                preview.appendChild(textContents);
+
+            } else {
+                const message = document.createElement('div');
+                message.textContent = `파일명 ${file.name}: .txt 파일을 선택하세요`;
+                listItem.appendChild(message);
+            }
+
+        }
+    }
+    /* 버블 채팅을 json으로 바꾸는 함수 */
+    function fnChgJson(data) {
+        let txtArray = data.split('\n');
+        let view = "";
+        var reg = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
+
+        view = '<div class="enter">버블 채팅방에 입장하셨습니다.</div>';
+        for(var t in txtArray) {
+            var row = txtArray[t];
+            //console.log(row)
+            if(t < 4) continue;
+            if(reg.test(row.substr(0, 16))) { // 메시지
+                if(t != 0) {
+                    view += '</div></div>';
+                }
+                if("나 : " == row.substr(18, 4)) {
+                    //view += '<div class="me">'+ row.substr(22) +'</div>';
+                    view += '<div class="chat me"><div class="textbox">'+ row.substr(22);
+                    mv_data.push({"flag":true, "user":"me", "date":row.substr(0, 16), "chat":row.substr(22)})
+
+                } else {
+                    //view += '<div class="ing">'+ row.substr(24) +'</div>';
+                    view += '<div class="chat ing">';
+                    view += '<div class="icon">';
+                    view += '<img class="profile" src="https://springdrop.github.io/bubble/img/profile.png"/>';
+                    //view += '<i class="fa-solid fa-user"></i>';
+                    view += '</div>';
+                    view += '<div class="title">';
+                    view += '<img class="badge" src="https://springdrop.github.io/bubble/img/badge.png"/>';
+                    view += '</div>';
+                    view += '<div class="textbox">'+ row.substr(24);
+                    mv_data.push({"flag":true, "user":"ing", "date":row.substr(0, 17), "chat":row.substr(24)})
+                }
+            } else {
+                mv_data.push({"flag":false, "user":"", "date":"","chat":row});
+                //view += '<div class="ing">'+ row +'</div>';
+                view += row + "<br/>";
+            }
+
+            if((txtArray.length-1) == t) { // 마지막 채팅
+                view += '</div></div>';
+                view += '<div class="enter">버블 채팅방이 종료되었습니다.</div>';
+                view += '<div class="chat" style="height:20px;"></div>';
+            }
+        }
+
+        $('.preview').append(view);
+        console.log("mvdata =>",mv_data)
+    }
+
+    function fnScrollUp() {
+        document.body.scrollTop = 0;
+    }
+
+    function fnScrollDown() {
+        document.body.scrollTop = document.body.scrollHeight;
+    }
+
+    const fileTypes = [
+        'text/plain',
+    ];
+
+    function validFileType(file) {
+        return fileTypes.includes(file.type);
+    }
+</script>
 <body>
     <form>
         <div>
