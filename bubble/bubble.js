@@ -38,6 +38,8 @@
         let txtArray = data.split('\n');
         let view = "";
         var reg = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
+
+        view = '<div class="enter">버블 채팅방에 입장하셨습니다.</div>';
         for(var t in txtArray) {
             var row = txtArray[t];
             //console.log(row)
