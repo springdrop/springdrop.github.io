@@ -214,6 +214,19 @@
         /*console.log("mvdata =>",mv_data)*/
     }
 
+    function fnToggle(obj) {
+        console.log(obj.value);
+        if(obj.value == "Hide") { // 버튼이 보이는 상태
+            $("#btnToggle").val("Show");
+            $("#up").hide();
+            $("#down").hide();
+        } else{
+            $("#btnToggle").val("Hide");
+            $("#up").show();
+            $("#down").show();
+        }
+    }
+
     function fnScrollUp() {
         document.body.scrollTop = 0;
     }
@@ -234,6 +247,7 @@
     <form>
         <div>
           <input type="file" id="btnUpload" accept=".txt" multiple onchange="fnFileUpload()">
+          <input type="button" id="btnToggle" value="Hide" onclick="fnToggle(this);"/>
         </div>
         <div class="preview"></div>
     </form>
