@@ -246,11 +246,11 @@
     <form>
         <div>
           <input type="file" id="btnUpload" accept=".txt" multiple onchange="fnFileUpload()">
-          <input type="button" id="btnToggle" value="Hide" onclick="fnToggle(this);"/>
+          <input type="button" id="btnToggle" value="Show" onclick="fnToggle(this);"/>
         </div>
         <div class="preview"></div>
     </form>
-    <div id="up" onclick="fnScrollUp();"><span>▲</span></div>
-    <div id="down" onclick="fnScrollDown();"><span>▼</span></div>
+    <div id="up" style="display:none;" onclick="fnScrollUp();"><span>▲</span></div>
+    <div id="down" style="display:none;" onclick="fnScrollDown();"><span>▼</span></div>
 </body>
 </html>
