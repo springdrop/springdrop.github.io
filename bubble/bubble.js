@@ -19,6 +19,7 @@
                 
                 let reader = new FileReader();
                 reader.onload = function () {
+                    $('.preview').html("");
                     fnChgJson(reader.result);
                 };
                 reader.readAsText(file, "UTF-8");
@@ -73,8 +74,9 @@
             }
 
             if((txtArray.length-1) == t) { // 마지막 채팅
-                view += '</div>';
-                view += '<div class="chat" style="height:70px;"></div>';
+                view += '</div></div>';
+                view += '<div class="enter">버블 채팅방이 종료되었습니다.</div>';
+                view += '<div class="chat" style="height:20px;"></div>';
             }
         }
 
