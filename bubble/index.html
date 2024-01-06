@@ -43,6 +43,14 @@
             /*font-family: 'Noto Sans KR', sans-serif;*/
             color:white;
         }
+        .ing .date{
+            position:absolute;
+            overflow: hidden;
+            font-weight: 600;
+            left:195px;
+            font-size: 13px !important;
+            line-height: 13px;
+        }
         .preview{padding:20px;}
         .preview .chat { display: flex; align-items: flex-start; padding: 10px;}
         .preview .chat .icon {
@@ -154,6 +162,7 @@
         let txtArray = data.split('\n');
         let view = "";
         var reg = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
+        var date = "";
 
         view = '<div class="enter">버블 채팅방에 입장하셨습니다.</div>';
         for(var t in txtArray) {
@@ -161,13 +170,18 @@
             //console.log(row)
             if(t < 4) continue;
             if(reg.test(row.substr(0, 16))) { // 메시지
+                date = row.substr(0, 16); // 보낸 시각
                 if(t != 0) {
-                    view += '</div></div>';
+                    view += '</div>';
+                    view += '</div>';
                 }
+
+                
                 if("나 : " == row.substr(18, 4)) {
                     //view += '<div class="me">'+ row.substr(22) +'</div>';
-                    view += '<div class="chat me"><div class="textbox">'+ row.substr(22);
-                    mv_data.push({"flag":true, "user":"me", "date":row.substr(0, 16), "chat":row.substr(22)})
+                    view += '<div class="chat me">';
+                    view += '<div class="textbox">'+ row.substr(22);
+                    /*mv_data.push({"flag":true, "user":"me", "date":row.substr(0, 16), "chat":row.substr(22)})*/
 
                 } else {
                     //view += '<div class="ing">'+ row.substr(24) +'</div>';
@@ -179,8 +193,9 @@
                     view += '<div class="title">';
                     view += '<img class="badge" src="https://springdrop.github.io/bubble/img/badge.png"/>';
                     view += '</div>';
+                    view += '<div class="date">'+date+'</div>';
                     view += '<div class="textbox">'+ row.substr(24);
-                    mv_data.push({"flag":true, "user":"ing", "date":row.substr(0, 17), "chat":row.substr(24)})
+                    /*mv_data.push({"flag":true, "user":"ing", "date":row.substr(0, 17), "chat":row.substr(24)})*/
                 }
             } else {
                 mv_data.push({"flag":false, "user":"", "date":"","chat":row});
@@ -196,7 +211,7 @@
         }
 
         $('.preview').append(view);
-        console.log("mvdata =>",mv_data)
+        /*console.log("mvdata =>",mv_data)*/
     }
 
     function fnScrollUp() {
