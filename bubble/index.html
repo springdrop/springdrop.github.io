@@ -164,25 +164,37 @@
         let txtArray = data.split('\n');
         let view = "";
         var reg = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
+        var regAndroid = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}\w\w$/;
         var date = "";
-
+        var flag;
+        var idx;
+        
         view = '<div class="enter">버블 채팅방에 입장하셨습니다.</div>';
+        
+        if(regAndroid.test(txtArray[2].substr(12,18))) {
+            flag = regAndroid;
+            idx = 18; // 안드로이드
+        } else {
+            flag = reg;
+            idx = 16; // 아이폰
+        }
+        
         for(var t in txtArray) {
             var row = txtArray[t];
             //console.log(row)
             if(t < 4) continue;
-            if(reg.test(row.substr(0, 16))) { // 메시지
-                date = row.substr(0, 16); // 보낸 시각
+            if(flag.test(row.substr(0, idx))) { // 메시지
+                date = row.substr(0, idx); // 보낸 시각
                 if(t != 0) {
                     view += '</div>';
                     view += '</div>';
                 }
 
                 
-                if("나 : " == row.substr(18, 4)) {
+                if("나 : " == row.substr(Number(idx+2), 4)) {
                     //view += '<div class="me">'+ row.substr(22) +'</div>';
                     view += '<div class="chat me">';
-                    view += '<div class="textbox">'+ row.substr(22);
+                    view += '<div class="textbox">'+ row.substr(Number(idx+6));
                     /*mv_data.push({"flag":true, "user":"me", "date":row.substr(0, 16), "chat":row.substr(22)})*/
 
                 } else {
@@ -196,7 +208,7 @@
                     view += '<img class="badge" src="https://springdrop.github.io/bubble/img/badge.png"/>';
                     view += '</div>';
                     view += '<div class="date">'+date+'</div>';
-                    view += '<div class="textbox">'+ row.substr(24);
+                    view += '<div class="textbox">'+ row.substr(Number(idx+8));
                     /*mv_data.push({"flag":true, "user":"ing", "date":row.substr(0, 17), "chat":row.substr(24)})*/
                 }
             } else {
