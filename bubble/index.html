@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>ING 버블 다시보기</title>
+    <title>Bubble</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Gothic+A1&family=Noto+Sans+KR&display=swap');
@@ -12,18 +12,20 @@
         }
         .enter{
             width: 500px;
-            height: 40px;
-            font-size:30px;
-            line-height: 40px;
+            height: 35px;
+            color: white;
+            font-size:20px;
+            line-height: 35px;
             margin: 20px auto;
             text-align: center;
-            background-color: rgb(242,228,174);
+            /*background-color: rgb(242,228,174);
             border:solid 3px;
             border-color: white;
             border-top-left-radius: 17px;
             border-top-right-radius: 17px;
             border-bottom-right-radius: 17px;
             border-bottom-left-radius: 17px;
+            */
         }
         #up {
             position: fixed;
@@ -46,18 +48,19 @@
         .ing .date{
             position:absolute;
             overflow: hidden;
-            font-weight: 600;
-            left:195px;
-            font-size: 13px !important;
-            line-height: 13px;
+            /*font-weight: 600;*/
+            left:210px;
+            margin: auto;
+            font-size: 15px !important;
+            line-height: 22px;
         }
         .preview{padding:20px;}
         .preview .chat { display: flex; align-items: flex-start; padding: 10px;}
         .preview .chat .icon {
             position: relative;
             overflow: hidden;
-            width: 100px;
-            height: 100px;
+            width: 100px !important;
+            height: 100px !important;
             left:50xp;
             border-radius: 50%;
             background-color: #eee;
@@ -65,9 +68,9 @@
         .preview .chat .title {
             position: absolute;
             overflow: hidden;
-            margin-left:105px;
-            width: 50px;
-            height: 15px;
+            margin-left:103px;
+            width: 70px;
+            /*height: 15px;*/
             border-radius: 50px;
             background-color: #eee;
         }
@@ -79,11 +82,11 @@
         .preview .chat.ing .textbox {
             position: relative;
             display: inline-block;
-            max-width: calc(100% - 70px);
-            /*max-width: 90%;*/
+            /*max-width: calc(100% - 70px);*/
+            max-width: 70% !important;
             padding: 13px;
             left:5px;
-            margin-top: 23px;
+            margin-top: 33px;
             font-size: 25px;
             font-weight: 500;
             /*font-family: 'Gothic A1', sans-serif;*/
@@ -106,8 +109,8 @@
         .preview .chat.me .textbox {
             position: relative;
             display: inline-block;
-            max-width: calc(100% - 70px);
-            /*max-width: 90%;*/
+            /*max-width: calc(100% - 70px);*/
+            max-width: 70%;
             padding: 13px;
             margin-top: 7px;
             font-size: 25px;
@@ -118,6 +121,14 @@
             border-top-left-radius: 17px;
             border-bottom-right-radius: 17px;
             border-bottom-left-radius: 17px;
+        }
+        .time {
+            height: 50px;
+            line-height: 50px;
+            font: bold;
+            color: white;
+            font-size: 16px;
+            text-align: center;
         }
     </style>
 </head>
@@ -130,11 +141,7 @@
         const input = document.querySelector('input');
         const preview = document.querySelector('.preview');
         const selectedFiles = input.files;
-        //const list = document.createElement('ul');
-        //preview.appendChild(list);
 
-        //if()
-        
         for(const file of selectedFiles) {
             const listItem = document.createElement('p');
 
@@ -165,10 +172,9 @@
         let view = "";
         var reg = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
         var regAndroid = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}\w\w$/;
-        var date = "";
-        var flag;
-        var idx;
-        
+        var date, flag, idx, now, time;
+        var cnt = 0;
+
         view = '<div class="enter">버블 채팅방에 입장하셨습니다.</div>';
         
         if(regAndroid.test(txtArray[2].substr(12,18))) {
@@ -181,15 +187,40 @@
         
         for(var t in txtArray) {
             var row = txtArray[t];
-            //console.log(row)
             if(t < 4) continue;
             if(flag.test(row.substr(0, idx))) { // 메시지
                 date = row.substr(0, idx); // 보낸 시각
                 if(t != 0) {
-                    view += '</div>';
-                    view += '</div>';
+                    view += '</div></div>';
                 }
 
+                if(cnt == 0) {
+                    now = row.substr(0, 10);
+                    view += '<div class="time">'+now.substr(0, 4)+'년 '+now.substr(5,2)+'월 '+now.substr(8)+'일</div>';
+                    cnt++;
+                } else {
+                    if(now != row.substr(0, 10)) {
+                        now = row.substr(0, 10);
+                        view += '<div class="time">'+now.substr(0, 4)+'년 '+now.substr(5,2)+'월 '+now.substr(8)+'일</div>';
+                    }
+                }
+
+                if(idx == 16) { // 아이폰
+                    if(row.substr(11,2) >= 0 && row.substr(11,2) < 12) {
+                        time = "오전 ";
+                    } else {
+                        time = "오후 ";
+                    }
+
+                } else { // 안드로이드
+                    if(row.substr(16, 1) == "A") {
+                        time = "오전 ";
+                    } else {
+                        time = "오후 ";
+                    }
+                }
+
+                time += row.substr(11,5);
                 
                 if("나 : " == row.substr(Number(idx+2), 4)) {
                     //view += '<div class="me">'+ row.substr(22) +'</div>';
@@ -198,6 +229,7 @@
                     /*mv_data.push({"flag":true, "user":"me", "date":row.substr(0, 16), "chat":row.substr(22)})*/
 
                 } else {
+                    //console.log("AA")
                     //view += '<div class="ing">'+ row.substr(24) +'</div>';
                     view += '<div class="chat ing">';
                     view += '<div class="icon">';
@@ -207,12 +239,12 @@
                     view += '<div class="title">';
                     view += '<img class="badge" src="https://springdrop.github.io/bubble/img/badge.png"/>';
                     view += '</div>';
-                    view += '<div class="date">'+date+'</div>';
+                    view += '<div class="date">'+time+'</div>';
                     view += '<div class="textbox">'+ row.substr(Number(idx+8));
                     /*mv_data.push({"flag":true, "user":"ing", "date":row.substr(0, 17), "chat":row.substr(24)})*/
                 }
             } else {
-                mv_data.push({"flag":false, "user":"", "date":"","chat":row});
+                //mv_data.push({"flag":false, "user":"", "date":"","chat":row});
                 //view += '<div class="ing">'+ row +'</div>';
                 view += row + "<br/>";
             }
