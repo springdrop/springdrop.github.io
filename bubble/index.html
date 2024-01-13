@@ -45,7 +45,7 @@
             /*font-family: 'Noto Sans KR', sans-serif;*/
             color:black;
         }
-        .ing .date{
+        .ing .format{
             position:absolute;
             overflow: hidden;
             /*font-weight: 600;*/
@@ -54,6 +54,14 @@
             font-size: 15px !important;
             line-height: 22px;
         }
+        .ing .format .name{
+            font-weight: 600;
+        }
+        .ing .format .time{
+            color:white;
+            padding-left: 15px;
+        }
+
         .preview{padding:20px;}
         .preview .chat { display: flex; align-items: flex-start; padding: 10px;}
         .preview .chat .icon {
@@ -122,7 +130,7 @@
             border-bottom-right-radius: 17px;
             border-bottom-left-radius: 17px;
         }
-        .time {
+        .date {
             height: 50px;
             line-height: 50px;
             font: bold;
@@ -196,12 +204,12 @@
 
                 if(cnt == 0) {
                     now = row.substr(0, 10);
-                    view += '<div class="time">'+now.substr(0, 4)+'년 '+now.substr(5,2)+'월 '+now.substr(8)+'일</div>';
+                    view += '<div class="date">'+now.substr(0, 4)+'년 '+now.substr(5,2)+'월 '+now.substr(8)+'일</div>';
                     cnt++;
                 } else {
                     if(now != row.substr(0, 10)) {
                         now = row.substr(0, 10);
-                        view += '<div class="time">'+now.substr(0, 4)+'년 '+now.substr(5,2)+'월 '+now.substr(8)+'일</div>';
+                        view += '<div class="date">'+now.substr(0, 4)+'년 '+now.substr(5,2)+'월 '+now.substr(8)+'일</div>';
                     }
                 }
 
@@ -239,7 +247,7 @@
                     view += '<div class="title">';
                     view += '<img class="badge" src="https://springdrop.github.io/bubble/img/badge.png"/>';
                     view += '</div>';
-                    view += '<div class="date">'+time+'</div>';
+                    view += '<div class="format"><span class="name">잉✨️</span><span class="time">'+time+'</span></div>';
                     view += '<div class="textbox">'+ row.substr(Number(idx+8));
                     /*mv_data.push({"flag":true, "user":"ing", "date":row.substr(0, 17), "chat":row.substr(24)})*/
                 }
