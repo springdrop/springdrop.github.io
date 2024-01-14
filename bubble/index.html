@@ -6,6 +6,9 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Gothic+A1&family=Noto+Sans+KR&display=swap');
         *{margin:0; padding:0;}
+        html, body {
+            
+        }
         body{
             background-color:rgb(178,199,217);
             font-family: 'Noto Sans KR', sans-serif;
@@ -55,7 +58,7 @@
             line-height: 22px;
         }
         .ing .format .name{
-            font-weight: 600;
+            /*font-weight: 600;*/
         }
         .ing .format .time{
             color:white;
@@ -76,7 +79,7 @@
         .preview .chat .title {
             position: absolute;
             overflow: hidden;
-            margin-left:103px;
+            margin-left: 104px;
             width: 70px;
             /*height: 15px;*/
             border-radius: 50px;
@@ -104,6 +107,8 @@
             border-bottom-right-radius: 17px;
             border-bottom-left-radius: 17px;
             background-color: white;
+            overflow:hidden;
+            word-wrap:break-word;
         }
         .preview .chat .textbox::before {
             position: absolute;
@@ -129,6 +134,11 @@
             border-top-left-radius: 17px;
             border-bottom-right-radius: 17px;
             border-bottom-left-radius: 17px;
+            overflow:hidden;
+            word-wrap:break-word;
+        }
+        .preview > .chat.ing .emoticon {
+            margin: 30px 0 0 5px;
         }
         .date {
             height: 50px;
@@ -199,7 +209,7 @@
             if(flag.test(row.substr(0, idx))) { // 메시지
                 date = row.substr(0, idx); // 보낸 시각
                 if(t != 0) {
-                    view += '</div></div>';
+                    view += '</p></div></div>';
                 }
 
                 if(cnt == 0) {
@@ -230,25 +240,45 @@
 
                 time += row.substr(11,5);
                 
+                var tmpTxt = "";
+                var tmpFlag = false;
+                
+                if(tmpTxt.substr(0, 9) == '<img src=') {
+                    tmpFlag = true;
+                }
+
                 if("나 : " == row.substr(Number(idx+2), 4)) {
-                    //view += '<div class="me">'+ row.substr(22) +'</div>';
+                    tmpTxt = fnChgIcon(row.substr(Number(idx+6)));
+                    if(tmpTxt.substr(0, 21) == '<img class="emoticon"') {
+                        tmpFlag = true;
+                    }
                     view += '<div class="chat me">';
-                    view += '<div class="textbox">'+ fnChgIcon(row.substr(Number(idx+6)));
+                    if(!tmpFlag) {
+                        view += '<div class="textbox"><p>';
+                    }
+                    view += tmpTxt;
+                    
                     /*mv_data.push({"flag":true, "user":"me", "date":row.substr(0, 16), "chat":row.substr(22)})*/
 
                 } else {
-                    //console.log("AA")
-                    //view += '<div class="ing">'+ row.substr(24) +'</div>';
+                    tmpTxt = fnChgIcon(row.substr(Number(idx+8)));
+                    if(tmpTxt.substr(0, 21) == '<img class="emoticon"') {
+                        tmpFlag = true;
+                    }
+                    
                     view += '<div class="chat ing">';
                     view += '<div class="icon">';
                     view += '<img class="profile" src="https://springdrop.github.io/bubble/img/profile.png"/>';
-                    //view += '<i class="fa-solid fa-user"></i>';
                     view += '</div>';
                     view += '<div class="title">';
                     view += '<img class="badge" src="https://springdrop.github.io/bubble/img/badge.png"/>';
                     view += '</div>';
                     view += '<div class="format"><span class="name">잉✨️</span><span class="time">'+time+'</span></div>';
-                    view += '<div class="textbox">'+ fnChgIcon(row.substr(Number(idx+8)));
+                    if(!tmpFlag) {
+                        view += '<div class="textbox"><p>';
+                    }
+                    view += tmpTxt;
+                    
                     /*mv_data.push({"flag":true, "user":"ing", "date":row.substr(0, 17), "chat":row.substr(24)})*/
                 }
             } else {
@@ -269,15 +299,13 @@
     }
 
     function fnChgIcon(txt) {
-        var rtn = "";
+        var rtn  = txt;
+
         if(txt.indexOf("/핑코.") > -1) {
-            rtn = '<img src="https://springdrop.github.io/bubble/img/icon/icon_'+ Number(Number(txt.substr(4,2).replaceAll("/",""))+1) +'.png" />';
-        } else {
-            rtn = txt;
+            rtn = '<img class="emoticon" src="https://springdrop.github.io/bubble/img/icon/icon_'+ Number(Number(txt.substr(4,2).replaceAll("/",""))+1) +'.png" />';
         }
 
         return rtn;
-        
     }
 
     function fnToggle(obj) {
