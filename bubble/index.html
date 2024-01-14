@@ -233,7 +233,7 @@
                 if("나 : " == row.substr(Number(idx+2), 4)) {
                     //view += '<div class="me">'+ row.substr(22) +'</div>';
                     view += '<div class="chat me">';
-                    view += '<div class="textbox">'+ row.substr(Number(idx+6));
+                    view += '<div class="textbox">'+ fnChgIcon(row.substr(Number(idx+6)));
                     /*mv_data.push({"flag":true, "user":"me", "date":row.substr(0, 16), "chat":row.substr(22)})*/
 
                 } else {
@@ -248,7 +248,7 @@
                     view += '<img class="badge" src="https://springdrop.github.io/bubble/img/badge.png"/>';
                     view += '</div>';
                     view += '<div class="format"><span class="name">잉✨️</span><span class="time">'+time+'</span></div>';
-                    view += '<div class="textbox">'+ row.substr(Number(idx+8));
+                    view += '<div class="textbox">'+ fnChgIcon(row.substr(Number(idx+8)));
                     /*mv_data.push({"flag":true, "user":"ing", "date":row.substr(0, 17), "chat":row.substr(24)})*/
                 }
             } else {
@@ -266,6 +266,18 @@
 
         $('.preview').append(view);
         /*console.log("mvdata =>",mv_data)*/
+    }
+
+    function fnChgIcon(txt) {
+        var rtn = "";
+        if(txt.indexOf("/핑코.") > -1) {
+            rtn = '<img src="https://springdrop.github.io/bubble/img/icon/icon_'+ Number(Number(txt.substr(4,2).replaceAll("/",""))+1) +'.png" />';
+        } else {
+            rtn = txt;
+        }
+
+        return rtn;
+        
     }
 
     function fnToggle(obj) {
