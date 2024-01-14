@@ -224,10 +224,25 @@
                 }
 
                 if(idx == 16) { // 아이폰
+                    var thour = row.substr(11,2);
+                    var tmin = row.substr(13,3);
                     if(row.substr(11,2) >= 0 && row.substr(11,2) < 12) {
                         time = "오전 ";
+                        
+                        if(ttime == "00") { 
+                            time += "12"+tmin;
+                        } else {
+                            time += thour+tmin;
+                        }
+
                     } else {
                         time = "오후 ";
+
+                        if(thour != "12") {
+                            time += "0"+Number(Number(thour)-12)+row.substr(13,3);
+                        } else {
+                            time += thour+tmin;
+                        }
                     }
 
                 } else { // 안드로이드
@@ -236,10 +251,9 @@
                     } else {
                         time = "오후 ";
                     }
+                    time += row.substr(11,5);
                 }
 
-                time += row.substr(11,5);
-                
                 var tmpTxt = "";
                 var tmpFlag = false;
                 
