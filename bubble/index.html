@@ -229,7 +229,7 @@
                     if(row.substr(11,2) >= 0 && row.substr(11,2) < 12) {
                         time = "오전 ";
                         
-                        if(ttime == "00") { 
+                        if(thour == "00") { 
                             time += "12"+tmin;
                         } else {
                             time += thour+tmin;
@@ -239,7 +239,7 @@
                         time = "오후 ";
 
                         if(thour != "12") {
-                            time += "0"+Number(Number(thour)-12)+row.substr(13,3);
+                            time += "0"+Number(Number(thour)-12)+tmin;
                         } else {
                             time += thour+tmin;
                         }
